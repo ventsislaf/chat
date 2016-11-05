@@ -73,5 +73,6 @@ defmodule Chat.Presence do
   original presence data.
   """
   use Phoenix.Presence, otp_app: :chat,
-                        pubsub_server: Chat.PubSub
+                        pubsub_server: Chat.PubSub,
+                        log_level: :debug
 end

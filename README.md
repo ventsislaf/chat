@@ -10,6 +10,13 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
 
+## Start local nodes
+
+```
+PORT=4001 elixir --name n1@127.0.0.1 --erl "-config sys.config" -S mix phoenix.server
+PORT=4002 elixir --name n2@127.0.0.1 --erl "-config sys.config" -S mix phoenix.server
+```
+
 ## Learn more
 
   * Official website: http://www.phoenixframework.org/
