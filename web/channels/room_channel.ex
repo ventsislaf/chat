@@ -15,8 +15,29 @@ defmodule Chat.RoomChannel do
 
   def handle_in("new_msg", %{"username" => username, "body" => body}, socket) do
     time = DateTime.utc_now |> format_time
-    broadcast! socket, "new_msg", %{time: time, username: username, body: body}
+    case handle_message(body) do
+      {:broadcast, msg} ->
+        broadcast! socket, "new_msg", %{time: time, username: username, body: msg}
+      _ ->
+        :ok
+    end
     {:noreply, socket}
+  end
+
+  defp handle_message("/img " <> url) do
+    {:broadcast, "<img src='#{url}' />"}
+  end
+
+  defp handle_message("/flip_table") do
+    {:broadcast, "(╯°□°）╯︵ ┻━┻"}
+  end
+
+  defp handle_message("/shrug") do
+    {:broadcast, " ¯\\_(ツ)_/¯"}
+  end
+
+  defp handle_message(msg) do
+    {:broadcast, msg}
   end
 
   defp format_time(%DateTime{hour: hour, minute: minute}) do
