@@ -3,7 +3,7 @@
     <h4>#lobby</h4>
     <div id="messages"></div>
     <div class="input-group bottom">
-      <span class="input-group-addon">@ventsi</span>
+      <span class="input-group-addon">@<%= current_username(@conn) %></span>
       <input type="text"
              id="input"
              class="form-control"

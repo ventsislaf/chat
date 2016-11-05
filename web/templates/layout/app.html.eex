@@ -18,6 +18,9 @@
       </main>
 
     </div> <!-- /container -->
+    <script>
+      window.username = "<%= Chat.PageView.current_username(@conn) %>"
+    </script>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

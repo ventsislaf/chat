@@ -2,7 +2,7 @@ defmodule Chat.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", Chat.RoomChannel
+  channel "room:lobby", Chat.RoomChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
@@ -19,8 +19,8 @@ defmodule Chat.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
-  def connect(_params, socket) do
-    {:ok, socket}
+  def connect(%{"username" => username}, socket) do
+    {:ok, assign(socket, :username, username)}
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:

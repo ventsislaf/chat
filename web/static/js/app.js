@@ -19,3 +19,38 @@ import "phoenix_html"
 // paths "./socket" or full ones "web/static/js/socket".
 
 // import socket from "./socket"
+
+import {Socket, Presence} from "phoenix"
+
+let socket = new Socket("/socket", { params: { username: window.username } })
+
+socket.connect()
+
+let presences = {}
+let $users = document.getElementById("users")
+let room = socket.channel("room:lobby", {})
+
+let listBy = (username, { metas: [first, ...rest] }) => {
+  return {
+    name: username,
+    count: rest.length + 1
+  }
+}
+
+let render = (presences) => {
+  $users.innerHTML = Presence.list(presences, listBy)
+    .map(user => `<li>${user.name} (${user.count})</li>`)
+    .join("")
+}
+
+room.on("presence_state", state => {
+  presences = Presence.syncState(presences, state)
+  render(presences)
+})
+
+room.on("presence_diff", diff => {
+  presences = Presence.syncDiff(presences, diff)
+  render(presences)
+})
+
+room.join()
