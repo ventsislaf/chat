@@ -12,4 +12,18 @@ defmodule Chat.RoomChannel do
     push socket, "presence_state", Presence.list(socket)
     {:noreply, socket}
   end
+
+  def handle_in("new_msg", %{"username" => username, "body" => body}, socket) do
+    time = DateTime.utc_now |> format_time
+    broadcast! socket, "new_msg", %{time: time, username: username, body: body}
+    {:noreply, socket}
+  end
+
+  defp format_time(%DateTime{hour: hour, minute: minute}) do
+    "#{format_number(hour)}:#{format_number(minute)}"
+  end
+
+  defp format_number(number) do
+    number |> Integer.to_string |> String.pad_leading(2, "0")
+  end
 end

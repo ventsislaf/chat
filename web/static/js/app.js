@@ -28,6 +28,8 @@ socket.connect()
 
 let presences = {}
 let $users = document.getElementById("users")
+let $input = document.getElementById("input")
+let $messages = document.getElementById("messages")
 let room = socket.channel("room:lobby", {})
 
 let listBy = (username, { metas: [first, ...rest] }) => {
@@ -43,6 +45,15 @@ let render = (presences) => {
     .join("")
 }
 
+let messageTemplate = ({time, username, body}) => {
+  return `
+  <p class="msg">
+    <span class="time">${time}</span>
+    <strong class="username">${username}</strong>
+    ${body}
+  </p>`
+}
+
 room.on("presence_state", state => {
   presences = Presence.syncState(presences, state)
   render(presences)
@@ -51,6 +62,20 @@ room.on("presence_state", state => {
 room.on("presence_diff", diff => {
   presences = Presence.syncDiff(presences, diff)
   render(presences)
+})
+
+room.on("new_msg", msg => {
+  $messages.innerHTML += messageTemplate(msg)
+  if (msg.username == window.username) {
+    $messages.scrollTop = $messages.scrollHeight
+  }
+})
+
+$input.addEventListener("keypress", e => {
+  if (e.keyCode == 13) {
+    room.push("new_msg", { username: window.username, body: $input.value })
+    $input.value = ""
+  }
 })
 
 room.join()
