@@ -1,1 +1,40 @@
-/* This file is for your main application css. */
+.main, .sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+h4 {
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.main {
+  border-right: 1px solid #e5e5e5;
+}
+
+#messages {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 1em;
+}
+
+.time {
+  color: #aaa;
+}
+
+.username {
+  margin: 0 0.3em;
+}
+
+.msg {
+  margin: 0.5em 0;
+}
+
+#users {
+  overflow-y: auto;
+}
+
+.bottom {
+  margin-bottom: 20px;
+}
